@@ -4,6 +4,7 @@ local M = {}
 M.general = {
   n = {
     ["<C-y>"] = { 'gg"+yG', "Test current cpp file in terminal" },
+    ["<leader>c"] = { "<cmd>Telescope commands<CR>", "Command" },
   },
 }
 
@@ -21,9 +22,27 @@ M.dap = {
     },
     ["<leader>do"] = {
       function()
+        require("dap").step_out()
+      end,
+      "Step into",
+    },
+    ["<leader>dn"] = {
+      function()
         require("dap").step_over()
       end,
-      "Step over",
+      "Next line",
+    },
+    ["<leader>dt"] = {
+      function()
+        require("dap").terminate()
+      end,
+      "Terminate",
+    },
+    ["<leader>dr"] = {
+      function()
+        require("dap").restart_frame()
+      end,
+      "Restart",
     },
     ["<leader>dc"] = {
       function()
@@ -33,12 +52,9 @@ M.dap = {
     },
     ["<leader>du"] = {
       function()
-        require("dap").repl.toggle()
-        -- local widgets = require "dap.ui.widgets"
-        -- local sidebar = widgets.sidebar(widgets.scopes)
-        -- sidebar.open()
+        require("dapui").toggle()
       end,
-      "Toggle debug repl",
+      "Toggle dap UI",
     },
   },
 }
@@ -64,7 +80,7 @@ M.dap_go = {
 M.custom = {
   n = {
     ["<leader>dr"] = { "<cmd>vs<CR><cmd>term cprun %:t:r<CR>", "Test current cpp file in terminal" },
-    ["<leader>c"] = { "<cmd> NvCheatsheet <CR>", "Mapping cheatsheet" },
+    ["<leader>?"] = { "<cmd> NvCheatsheet <CR>", "Mapping cheatsheet" },
   },
   c = {
     ["<C-j>"] = { "<C-n>", "Navigate down in command mode" },
