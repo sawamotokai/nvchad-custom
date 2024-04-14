@@ -4,7 +4,13 @@ local M = {}
 M.general = {
   n = {
     ["<C-y>"] = { 'gg"+yG', "Test current cpp file in terminal" },
+  },
+}
+
+M.telescope = {
+  n = {
     ["<leader>c"] = { "<cmd>Telescope commands<CR>", "Command" },
+    ["<leader>ff"] = { "<cmd>Telescope find_files<CR>", "Command" },
   },
 }
 
@@ -44,6 +50,12 @@ M.dap = {
       end,
       "Restart",
     },
+    ["<leader>dv"] = {
+      function()
+        require("dapui").eval()
+      end,
+      "Value under cursor",
+    },
     ["<leader>dc"] = {
       function()
         require("dap").continue()
@@ -76,11 +88,53 @@ M.dap_go = {
   },
 }
 
+M.trouble = {
+  n = {
+    ["<leader>tt"] = {
+      function()
+        require("trouble").toggle()
+      end,
+      "Trouble",
+    },
+    ["<leader>tw"] = {
+      function()
+        require("trouble").toggle "workspace_diagnostics"
+      end,
+      "Workspace",
+    },
+    ["<leader>td"] = {
+      function()
+        require("trouble").toggle "document_diagnostics"
+      end,
+      "Document",
+    },
+    ["<leader>tq"] = {
+      function()
+        require("trouble").toggle "quickfix"
+      end,
+      "Quick fix",
+    },
+    ["<leader>tl"] = {
+      function()
+        require("trouble").toggle "loclist"
+      end,
+      "Location list",
+    },
+    ["<leader>tr"] = {
+      function()
+        require("trouble").toggle "lsp_references"
+      end,
+      "References",
+    },
+  },
+}
+
 -- more keybinds!
 M.custom = {
   n = {
     ["<leader>dr"] = { "<cmd>vs<CR><cmd>term cprun %:t:r<CR>", "Test current cpp file in terminal" },
     ["<leader>?"] = { "<cmd> NvCheatsheet <CR>", "Mapping cheatsheet" },
+    ["<leader>wt"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
   },
   c = {
     ["<C-j>"] = { "<C-n>", "Navigate down in command mode" },
@@ -199,14 +253,14 @@ M.comment = {
 
 M.window = {
   n = {
-    ["<leader>/"] = {
-      "<cmd> vsplit <CR>",
-      "Split Vertically",
-    },
-    ["<leader>-"] = {
-      "<cmd> split <CR>",
-      "Split horizontally",
-    },
+    -- ["<leader>/"] = {
+    --   "<cmd> vsplit <CR>",
+    --   "Split Vertically",
+    -- },
+    -- ["<leader>-"] = {
+    --   "<cmd> split <CR>",
+    --   "Split horizontally",
+    -- },
     ["<leader>W"] = {
       "<cmd>q <CR>",
       "Close window",
@@ -221,12 +275,14 @@ M.disabled = {
     ["<leader>ca"] = "",
     ["<leader>cc"] = "",
     ["<leader>ch"] = "",
-    ["<leader>/"] = "",
+    ["<leader>th"] = "",
+    -- ["<leader>/"] = "",
     ["<leader>b"] = "",
+    ["<leader>ff"] = "",
   },
 
   v = {
-    ["<leader>/"] = "",
+    -- ["<leader>/"] = "",
   },
 }
 

@@ -94,7 +94,7 @@ local plugins = {
           m = { name = "bookMark" },
           p = { name = "Pick hidden term" },
           r = { name = "Rust" },
-          t = { name = "Theme" },
+          t = { name = "Trouble" },
           w = { name = "Workspace/Which-key" },
           ["dg"] = { name = "Golang" },
           ["lg"] = { name = "Go to" },
@@ -104,6 +104,15 @@ local plugins = {
     setup = function()
       require("core.utils").load_mappings "whichkey"
     end,
+  },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
   },
   -- Install a plugin
   {
@@ -228,6 +237,9 @@ local plugins = {
     end,
   },
   { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+
+  -- Copilot
+  { "github/copilot.vim", event = "VeryLazy" },
 
   -- To make a plugin not be loaded
   -- {
