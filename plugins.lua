@@ -90,6 +90,7 @@ local plugins = {
           d = { name = "Dap" },
           f = { name = "Find" },
           g = { name = "Golang" },
+          j = { name = "Jump" },
           l = { name = "Lsp" },
           m = { name = "bookMark" },
           p = { name = "Pick hidden term" },
