@@ -46,6 +46,50 @@ local plugins = {
   },
 
   {
+    "ckolkey/ts-node-action",
+    dependencies = { "nvim-treesitter" },
+    opts = {},
+    event = "VeryLazy",
+    config = function()
+      local actions = require "ts-node-action.actions"
+      local operators = {
+        ["!="] = "==",
+        ["!=="] = "===",
+        ["=="] = "!=",
+        ["==="] = "!==",
+        [">"] = "<",
+        ["<"] = ">",
+        [">="] = "<=",
+        ["<="] = ">=",
+      }
+
+      local padding = {
+        [","] = "%s ",
+        [":"] = "%s ",
+        ["{"] = "%s ",
+        ["}"] = " %s",
+      }
+      require("ts-node-action").setup {
+        svelte = {
+          ["property_identifier"] = actions.cycle_case(),
+          ["string_fragment"] = actions.conceal_string(),
+          ["attribute_value"] = actions.conceal_string(),
+          ["attribute_name"] = actions.conceal_string(),
+          ["binary_expression"] = actions.toggle_operator(operators),
+          ["object"] = actions.toggle_multiline(padding),
+          ["array"] = actions.toggle_multiline(padding),
+          ["statement_block"] = actions.toggle_multiline(padding),
+          ["object_pattern"] = actions.toggle_multiline(padding),
+          ["object_type"] = actions.toggle_multiline(padding),
+          ["formal_parameters"] = actions.toggle_multiline(padding),
+          ["arguments"] = actions.toggle_multiline(padding),
+          ["number"] = actions.toggle_int_readability(),
+        },
+      }
+    end,
+  },
+
+  {
     "nvim-tree/nvim-tree.lua",
     opts = overrides.nvimtree,
   },
@@ -106,6 +150,7 @@ local plugins = {
       require("core.utils").load_mappings "whichkey"
     end,
   },
+  { "echasnovski/mini.icons", version = false },
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -141,6 +186,12 @@ local plugins = {
 
   {
     "stevearc/dressing.nvim",
+    event = "VeryLazy",
+  },
+
+  -- image viewer
+  {
+    "edluffy/hologram.nvim",
     event = "VeryLazy",
   },
 

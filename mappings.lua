@@ -10,7 +10,6 @@ M.general = {
 M.telescope = {
   n = {
     ["<leader>c"] = { "<cmd>Telescope commands<CR>", "Command" },
-    ["<leader>ff"] = { "<cmd>Telescope find_files<CR>", "Command" },
   },
 }
 
@@ -135,6 +134,7 @@ M.custom = {
     ["<leader>dr"] = { "<cmd>vs<CR><cmd>term cprun %:t:r<CR>", "Test current cpp file in terminal" },
     ["<leader>?"] = { "<cmd> NvCheatsheet <CR>", "Mapping cheatsheet" },
     ["<leader>wt"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
+    ["<leader>fm"] = { "<cmd> Telescope marks <CR>", "Bookmarks" },
   },
   c = {
     ["<C-j>"] = { "<C-n>", "Navigate down in command mode" },
@@ -275,10 +275,10 @@ M.disabled = {
     ["<leader>ca"] = "",
     ["<leader>cc"] = "",
     ["<leader>ch"] = "",
+    ["<leader>m"] = "",
     ["<leader>th"] = "",
     -- ["<leader>/"] = "",
     ["<leader>b"] = "",
-    ["<leader>ff"] = "",
   },
 
   v = {
