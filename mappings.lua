@@ -9,7 +9,7 @@ M.general = {
 
 M.telescope = {
   n = {
-    ["<leader>c"] = { "<cmd>Telescope commands<CR>", "Command" },
+    ["<leader>m"] = { "<cmd>Telescope commands<CR>", "Command" },
   },
 }
 
@@ -161,6 +161,12 @@ M.chatgpt = {
       "<cmd>ChatGPTRun code_readability_analysis<CR>",
       "Code Readability Analysis",
       mode = { "n", "v" },
+    },
+    ["<leader>c"] = {
+      function()
+        vim.lsp.buf.code_action()
+      end,
+      "LSP code action",
     },
   },
 }
