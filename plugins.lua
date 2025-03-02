@@ -102,6 +102,8 @@ local plugins = {
       table.insert(M.sources, { name = "crates" })
       M.mapping["<C-k>"] = cmp.mapping.select_prev_item()
       M.mapping["<C-j>"] = cmp.mapping.select_next_item()
+      M.mapping["<Tab>"] = nil
+      M.mapping["<S-Tab>"] = nil
       return M
     end,
   },
