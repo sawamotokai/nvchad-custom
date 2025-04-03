@@ -5,6 +5,10 @@ M.general = {
   n = {
     ["<C-y>"] = { 'gg"+yG', "Test current cpp file in terminal" },
   },
+  i = {
+    ["jk"] = { "<ESC>", "jk to escape" },
+    ["kj"] = { "<ESC>", "kj to escape" },
+  },
 }
 
 M.telescope = {

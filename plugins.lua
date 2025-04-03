@@ -177,14 +177,14 @@ local plugins = {
       }
     end,
   },
-
-  {
-    "max397574/better-escape.nvim",
-    event = "InsertEnter",
-    config = function()
-      require("better_escape").setup()
-    end,
-  },
+  --
+  -- {
+  --   "max397574/better-escape.nvim",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("better_escape").setup()
+  --   end,
+  -- },
 
   {
     "stevearc/dressing.nvim",
@@ -234,6 +234,7 @@ local plugins = {
     "simrat39/rust-tools.nvim",
     ft = "rust",
     dependencies = "neovim/nvim-lspconfig",
+
     opts = function()
       return require "custom.configs.rust-tools"
     end,
@@ -249,6 +250,34 @@ local plugins = {
       local crates = require "crates"
       crates.setup(opts)
       crates.show()
+    end,
+  },
+
+  {
+    "cordx56/rustowl",
+    dependencies = { "neovim/nvim-lspconfig" },
+    event = "VeryLazy",
+    config = function()
+      local lspconfig = require "lspconfig"
+
+      -- Custom LSP configuration for rustowlsp
+      lspconfig.rustowlsp = {
+        setup = function()
+          lspconfig.util.default_config.cmd = { "cargo", "owlsp" }
+          lspconfig.util.default_config.filetypes = { "rust" }
+          lspconfig.util.default_config.root_dir = lspconfig.util.root_pattern "Cargo.toml"
+        end,
+      }
+
+      -- Call the custom server configuration
+      lspconfig.rustowlsp.setup {
+        cmd = { "cargo", "owlsp" },
+        filetypes = { "rust" },
+        root_dir = lspconfig.util.root_pattern "Cargo.toml",
+        settings = {
+          -- Add any additional settings specific to the LSP server
+        },
+      }
     end,
   },
 
