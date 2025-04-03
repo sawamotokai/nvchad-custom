@@ -10,7 +10,7 @@ local plugins = {
     dependencies = {
       -- format & linting
       {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         config = function()
           require "custom.configs.null-ls"
         end,
@@ -254,31 +254,18 @@ local plugins = {
   },
 
   {
-    "cordx56/rustowl",
-    dependencies = { "neovim/nvim-lspconfig" },
-    event = "VeryLazy",
-    config = function()
-      local lspconfig = require "lspconfig"
-
-      -- Custom LSP configuration for rustowlsp
-      lspconfig.rustowlsp = {
-        setup = function()
-          lspconfig.util.default_config.cmd = { "cargo", "owlsp" }
-          lspconfig.util.default_config.filetypes = { "rust" }
-          lspconfig.util.default_config.root_dir = lspconfig.util.root_pattern "Cargo.toml"
-        end,
-      }
-
-      -- Call the custom server configuration
-      lspconfig.rustowlsp.setup {
-        cmd = { "cargo", "owlsp" },
-        filetypes = { "rust" },
-        root_dir = lspconfig.util.root_pattern "Cargo.toml",
-        settings = {
-          -- Add any additional settings specific to the LSP server
-        },
-      }
-    end,
+    'cordx56/rustowl',
+    build = 'cd rustowl && cargo install --path . --locked',
+    lazy = false, -- This plugin is already lazy
+    opts = {
+      client = {
+        on_attach = function(_, buffer)
+          vim.keymap.set('n', '<leader>o', function()
+            require('rustowl').toggle(buffer)
+          end, { buffer = buffer, desc = 'Toggle RustOwl' })
+        end
+      },
+    },
   },
 
   -- Golang
