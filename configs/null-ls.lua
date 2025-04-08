@@ -18,8 +18,6 @@ local sources = {
 
   -- cpp
   b.formatting.clang_format,
-  b.formatting.dxfmt,
-  b.diagnostics.ltrs,
   -- golang
   -- b.formatting.gofumpt,
   b.formatting.goimports_reviser,

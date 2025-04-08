@@ -94,40 +94,28 @@ M.dap_go = {
 M.trouble = {
   n = {
     ["<leader>tt"] = {
-      function()
-        require("trouble").toggle()
-      end,
-      "Trouble",
+      "<cmd>Trouble diagnostics toggle<CR>",
+      "Diagnostics",
     },
-    ["<leader>tw"] = {
-      function()
-        require("trouble").toggle "workspace_diagnostics"
-      end,
-      "Workspace",
+    ["<leader>ts"] = {
+      "<cmd>Trouble symbols toggle focus=false<cr>",
+      "Symbols",
     },
-    ["<leader>td"] = {
-      function()
-        require("trouble").toggle "document_diagnostics"
-      end,
-      "Document",
+    ["<leader>tb"] = {
+      "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+      "Buffer",
     },
     ["<leader>tq"] = {
-      function()
-        require("trouble").toggle "quickfix"
-      end,
+      "<cmd>Trouble qflist toggle<cr>",
       "Quick fix",
     },
     ["<leader>tl"] = {
-      function()
-        require("trouble").toggle "loclist"
-      end,
+      "<cmd>Trouble loclist toggle<cr>",
       "Location list",
     },
     ["<leader>tr"] = {
-      function()
-        require("trouble").toggle "lsp_references"
-      end,
-      "References",
+      "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+      "LSP References",
     },
   },
 }
@@ -146,32 +134,34 @@ M.custom = {
   },
 }
 
-M.chatgpt = {
+M.ai = {
   n = {
     -- A as in AI
-    ["<leader>ac"] = { "<cmd>ChatGPT<CR>", "ChatGPT" },
-    ["<leader>ae"] = { "<cmd>ChatGPTEditWithInstruction<CR>", "Edit with instruction", mode = { "n", "v" } },
-    ["<leader>ag"] = { "<cmd>ChatGPTRun grammar_correction<CR>", "Grammar Correction", mode = { "n", "v" } },
-    ["<leader>at"] = { "<cmd>ChatGPTRun translate<CR>", "Translate", mode = { "n", "v" } },
-    ["<leader>ak"] = { "<cmd>ChatGPTRun keywords<CR>", "Keywords", mode = { "n", "v" } },
-    ["<leader>ad"] = { "<cmd>ChatGPTRun docstring<CR>", "Docstring", mode = { "n", "v" } },
-    ["<leader>aa"] = { "<cmd>ChatGPTRun add_tests<CR>", "Add Tests", mode = { "n", "v" } },
-    ["<leader>ao"] = { "<cmd>ChatGPTRun optimize_code<CR>", "Optimize Code", mode = { "n", "v" } },
-    ["<leader>as"] = { "<cmd>ChatGPTRun summarize<CR>", "Summarize", mode = { "n", "v" } },
-    ["<leader>af"] = { "<cmd>ChatGPTRun fix_bugs<CR>", "Fix Bugs", mode = { "n", "v" } },
-    ["<leader>ax"] = { "<cmd>ChatGPTRun explain_code<CR>", "Explain Code", mode = { "n", "v" } },
-    ["<leader>ar"] = { "<cmd>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", mode = { "n", "v" } },
-    ["<leader>al"] = {
-      "<cmd>ChatGPTRun code_readability_analysis<CR>",
-      "Code Readability Analysis",
-      mode = { "n", "v" },
-    },
+    ["<leader>an"] = { "<cmd>PrtChatNew<CR>", "New Chat" },
+    ["<leader>ai"] = { "<cmd>PrtImplement<CR>", "Gen Code from Highlighted" },
+    ["<leader>a?"] = { "<cmd>PrtAsk<CR>", "Ask Question" },
+    ["<leader>at"] = { "<cmd>PrtChatToggle<CR>", "Toggle Chat" },
+    ["<leader>ac"] = { "<cmd>PrtContext<CR>", "Edit Context" },
+    ["<leader>ap"] = { "<cmd>PrtChatPaste<CR>", "Paste to Chat" },
+    ["<leader>af"] = { "<cmd>PrtChatFinder<CR>", "Find Chat" },
+    ["<leader>aD"] = { "<cmd>PrtChatDelete<CR>", "Delete Chat" },
+    ["<leader>as"] = { "<cmd>PrtChatRespond<CR>", "Send Chat" },
+    ["<leader>aa"] = { "<cmd>PrtAppend<CR>", "Append to Cursor" },
+    ["<leader>a."] = { "<cmd>PrtRetry<CR>", "Repeat append" },
     ["<leader>c"] = {
       function()
         vim.lsp.buf.code_action()
       end,
       "LSP code action",
     },
+  },
+  v = {
+    -- A as in AI
+    ["<leader>ai"] = { "<cmd>'<,'>PrtImplement<CR>", "Gen Code from Highlighted" },
+    ["<leader>a?"] = { "<cmd>PrtAsk<CR>", "Ask Question" },
+    ["<leader>ap"] = { "<cmd>'<,'>PrtChatPaste<CR>", "Paste to Chat" },
+    ["<leader>aa"] = { "<cmd>'<,'>PrtAppend<CR>", "Append to Cursor" },
+    ["<leader>a."] = { "<cmd>PrtRetry<CR>", "Repeat append" },
   },
 }
 
@@ -219,6 +209,21 @@ M.rust = {
 M.jump = {
   n = {
     ["<leader>jc"] = {
+      function()
+        local ok, start = require("indent_blankline.utils").get_current_context(
+          vim.g.indent_blankline_context_patterns,
+          vim.g.indent_blankline_use_treesitter_scope
+        )
+
+        if ok then
+          vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
+          vim.cmd [[normal! _]]
+        end
+      end,
+
+      "Jump to current context",
+    },
+    ["<leader>jn"] = {
       function()
         local ok, start = require("indent_blankline.utils").get_current_context(
           vim.g.indent_blankline_context_patterns,

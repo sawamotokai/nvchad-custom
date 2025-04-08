@@ -100,6 +100,7 @@ local plugins = {
       local M = require "plugins.configs.cmp"
       local cmp = require "cmp"
       table.insert(M.sources, { name = "crates" })
+      table.insert(M.sources, { name = "parrot" })
       M.mapping["<C-k>"] = cmp.mapping.select_prev_item()
       M.mapping["<C-j>"] = cmp.mapping.select_next_item()
       M.mapping["<Tab>"] = nil
@@ -130,22 +131,19 @@ local plugins = {
         return
       end
       wk.register {
-        -- add group
-        ["<leader>"] = {
-          a = { name = "AI action" },
-          d = { name = "Dap" },
-          f = { name = "Find" },
-          g = { name = "Golang" },
-          j = { name = "Jump" },
-          l = { name = "Lsp" },
-          m = { name = "bookMark" },
-          p = { name = "Pick hidden term" },
-          r = { name = "Rust" },
-          t = { name = "Trouble" },
-          w = { name = "Workspace/Which-key" },
-          ["dg"] = { name = "Golang" },
-          ["lg"] = { name = "Go to" },
-        },
+        { "<leader>a", group = "AI" },
+        { "<leader>d", group = "Dap" },
+        { "<leader>dg", group = "Golang" },
+        { "<leader>f", group = "Find" },
+        { "<leader>g", group = "Golang" },
+        { "<leader>j", group = "Jump" },
+        { "<leader>l", group = "Lsp" },
+        { "<leader>lg", group = "Go to" },
+        { "<leader>m", group = "bookMark" },
+        { "<leader>p", group = "Pick hidden term" },
+        { "<leader>r", group = "Rust" },
+        { "<leader>t", group = "Trouble" },
+        { "<leader>w", group = "Workspace/Which-key" },
       }
     end,
     setup = function()
@@ -156,6 +154,7 @@ local plugins = {
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    event = "VeryLazy",
     opts = {
       -- your configuration comes here
       -- or leave it empty to use the default settings
@@ -164,16 +163,74 @@ local plugins = {
   },
   -- Install a plugin
   {
-    "jackMort/ChatGPT.nvim",
+    "frankroeder/parrot.nvim",
+    dependencies = { 'ibhagwan/fzf-lua', 'nvim-lua/plenary.nvim' },
     event = "VeryLazy",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
+    -- optionally include "folke/noice.nvim" or "rcarriga/nvim-notify" for beautiful notifications
     config = function()
-      require("chatgpt").setup {
-        api_key_cmd = "cat /home/kai/.config/API_KEYS/chatgpt",
+      require("parrot").setup {
+        -- Providers must be explicitly added to make them available.
+        providers = {
+          anthropic = {
+            api_key = os.getenv "ANTHROPIC_API_KEY",
+          },
+          gemini = {
+            api_key = os.getenv "GEMINI_API_KEY",
+          },
+          groq = {
+            api_key = os.getenv "GROQ_API_KEY",
+          },
+          mistral = {
+            api_key = os.getenv "MISTRAL_API_KEY",
+          },
+          pplx = {
+            api_key = os.getenv "PERPLEXITY_API_KEY",
+          },
+          -- provide an empty list to make provider available (no API key required)
+          ollama = {},
+          openai = {
+            api_key = os.getenv "OPENAI_API_KEY",
+          },
+          github = {
+            api_key = os.getenv "GITHUB_TOKEN",
+          },
+          nvidia = {
+            api_key = os.getenv "NVIDIA_API_KEY",
+          },
+          xai = {
+            api_key = os.getenv "XAI_API_KEY",
+          },
+        },
+        prompts = {
+            ["Complete"] = "Continue the implementation of the provided snippet in the file {{filename}}." -- e.g., :'<,'>PrtAppend Complete
+        },
+        hooks = {
+          CompleteFullContext = function(prt, params)
+            local template = [[
+            I have the following code from {{filename}}:
+
+            ```{{filetype}}
+            {{filecontent}}
+            ```
+
+            I have the following code from all open buffers:
+
+            ```{{filetype}}
+            {{multifilecontent}}
+            ```
+
+            Please look at the following section specifically if any:
+            ```{{filetype}}
+            {{selection}}
+            ```
+
+            Please finish the code above carefully and logically.
+            Respond just with the snippet of code that should be inserted; no words exccept code.
+            ]]
+            local model_obj = prt.get_model("command")
+            prt.Prompt(params, prt.ui.Target.append, model_obj, nil, template)
+          end,
+        }
       }
     end,
   },
@@ -194,7 +251,6 @@ local plugins = {
   -- image viewer
   {
     "edluffy/hologram.nvim",
-    event = "VeryLazy",
   },
 
   {
